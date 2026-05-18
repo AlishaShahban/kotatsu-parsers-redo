@@ -46,6 +46,29 @@ internal class Comix(context: MangaLoaderContext) :
             SortOrder.ALPHABETICAL
         )
     )
+    
+    // --- NEW: Status Dropdown UI ---
+    override fun getAvailableStates(): Set<MangaState> = setOf(
+        MangaState.ONGOING,
+        MangaState.FINISHED,
+        MangaState.PAUSED,
+        MangaState.ABANDONED
+    )
+
+    // --- NEW: Content Type Checkboxes UI ---
+    override val filters: List<MangaSourceListFilter>
+        get() = listOf(
+            MangaSourceListFilter.CheckboxGroup(
+                key = "content_types",
+                name = "Types",
+                options = arrayOf(
+                    MangaSourceListFilter.CheckboxGroup.Option("manga", "Manga"),
+                    MangaSourceListFilter.CheckboxGroup.Option("manhwa", "Manhwa"),
+                    MangaSourceListFilter.CheckboxGroup.Option("manhua", "Manhua"),
+                    MangaSourceListFilter.CheckboxGroup.Option("other", "Other")
+                )
+            )
+        )
 
     override suspend fun getFilterOptions() = MangaListFilterOptions(
         availableTags = fetchAvailableTags(),
@@ -133,6 +156,26 @@ internal class Comix(context: MangaLoaderContext) :
                 } else {
                     append("&").append(param)
                 }
+            }
+            // --- NEW: Apply Status Filter ---
+            filter.states.firstOrNull()?.let { state ->
+                val stateQuery = when (state) {
+                    MangaState.ONGOING -> "releasing"
+                    MangaState.FINISHED -> "finished"
+                    MangaState.PAUSED -> "on_hiatus"
+                    MangaState.ABANDONED -> "discontinued"
+                    else -> ""
+                }
+                if (stateQuery.isNotEmpty()) {
+                    addParam("status=$stateQuery")
+                }
+            }
+
+            // --- NEW: Apply Checkbox Type Filters (Scenario A) ---
+            val typeFilter = filter.filters.find { it.key == "content_types" } as? MangaSourceListFilter.CheckboxGroup
+            typeFilter?.state?.forEach { selectedOption ->
+                // This appends "types[]=manga", "types[]=manhwa", etc., dynamically based on what is checked
+                addParam("types[]=${selectedOption.value}")
             }
 
             // Search keyword if provided
