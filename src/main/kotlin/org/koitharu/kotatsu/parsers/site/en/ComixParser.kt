@@ -34,7 +34,7 @@ internal class Comix(context: MangaLoaderContext) :
             isSearchSupported = true,
             isSearchWithFiltersSupported = true,
             isMultipleTagsSupported = true,
-            isTagsExclusionSupported = false,
+            isTagsExclusionSupported = true,
         )
 
     override val availableSortOrders: Set<SortOrder> = LinkedHashSet(
@@ -49,6 +49,22 @@ internal class Comix(context: MangaLoaderContext) :
 
     override suspend fun getFilterOptions() = MangaListFilterOptions(
         availableTags = fetchAvailableTags(),
+        availableStates = EnumSet.of(
+            MangaState.ONGOING,
+            MangaState.FINISHED,
+            MangaState.PAUSED,
+            MangaState.ABANDONED,
+        ),
+        availableContentTypes = EnumSet.of(
+            ContentType.MANGA,
+            ContentType.MANHWA,
+            ContentType.MANHUA,
+            ContentType.COMICS,
+        ),
+        availableContentRating = EnumSet.of(
+            ContentRating.SAFE,
+            ContentRating.SUGGESTIVE,
+        ),
     )
 
     private suspend fun fetchAvailableTags(): Set<MangaTag> {
@@ -151,17 +167,56 @@ internal class Comix(context: MangaLoaderContext) :
             }
 
             // Handle genre filtering
-            if (filter.tags.isNotEmpty()) {
-                for (tag in filter.tags) {
-                    addParam("genres_in[]=${tag.key}")
-                }
+            filter.tags.forEach { tag ->
+                addParam("genres_in[]=${tag.key}")
+            }
+            filter.tagsExclude.forEach { tag ->
+                addParam("genres_ex[]=${tag.key}")
             }
 
-            // Default exclude adult content
-            addParam("genres_ex[]=87264") // Adult
-            addParam("genres_ex[]=87266") // Hentai
-            addParam("genres_ex[]=87268") // Smut
-            addParam("genres_ex[]=87265") // Ecchi
+            // Default exclude adult content.
+            // Allow suggestive results when the filter explicitly asks for it.
+            val defaultExcludedGenres = LinkedHashSet<String>()
+            when {
+                filter.contentRating.isEmpty() || ContentRating.SAFE in filter.contentRating -> {
+                    defaultExcludedGenres += "87264" // Adult
+                    defaultExcludedGenres += "87266" // Hentai
+                    defaultExcludedGenres += "87268" // Smut
+                    defaultExcludedGenres += "87265" // Ecchi
+                }
+                ContentRating.SUGGESTIVE in filter.contentRating -> {
+                    defaultExcludedGenres += "87264" // Adult
+                    defaultExcludedGenres += "87266" // Hentai
+                    defaultExcludedGenres += "87268" // Smut
+                }
+            }
+            defaultExcludedGenres.forEach { genreId ->
+                addParam("genres_ex[]=$genreId")
+            }
+
+            // Pass through the rest of the filter dimensions using the same
+            // style as other Kotatsu parsers. The backend ignores unsupported
+            // parameters, so this stays safe even if Comix only honors a subset.
+            val statusMap = mapOf(
+                MangaState.ONGOING to "Ongoing",
+                MangaState.FINISHED to "Complete",
+                MangaState.ABANDONED to "Canceled",
+                MangaState.PAUSED to "Hiatus",
+            )
+            filter.states.mapNotNull { statusMap[it] }.forEach { status ->
+                addParam("included_status=$status")
+            }
+
+            val typeMap = mapOf(
+                ContentType.MANGA to "Manga",
+                ContentType.MANHWA to "Manhwa",
+                ContentType.MANHUA to "Manhua",
+                ContentType.COMICS to "OEL",
+            )
+            filter.types.mapNotNull { typeMap[it] }.forEach { type ->
+                addParam("included_type=$type")
+            }
+
             addParam("limit=$pageSize")
             addParam("page=$page")
         }
