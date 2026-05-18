@@ -46,17 +46,17 @@ internal class Comix(context: MangaLoaderContext) :
             SortOrder.ALPHABETICAL
         )
     )
-    
-    override suspend fun getFilterOptions() = MangaListFilterOptions(
-        // 1. Pass the Status options directly into the filter builder
-        availableStates = setOf(
-            MangaState.ONGOING,
-            MangaState.FINISHED,
-            MangaState.PAUSED,
-            MangaState.ABANDONED
-        ),
-        // 2. Pass the custom Types checkbox group directly into the filter builder
-        filters = listOf(
+    // --- NEW: Status Dropdown UI ---
+    override fun getAvailableStates(): Set<MangaState> = setOf(
+        MangaState.ONGOING,
+        MangaState.FINISHED,
+        MangaState.PAUSED,
+        MangaState.ABANDONED
+    )
+
+    // --- NEW: Content Type Checkboxes UI ---
+    override val filters: List<MangaSourceListFilter>
+        get() = listOf(
             MangaSourceListFilter.CheckboxGroup(
                 key = "content_types",
                 name = "Types",
@@ -68,6 +68,9 @@ internal class Comix(context: MangaLoaderContext) :
                 )
             )
         )
+    
+    override suspend fun getFilterOptions() = MangaListFilterOptions(
+        availableTags = fetchAvailableTags(),
     )
 
     private suspend fun fetchAvailableTags(): Set<MangaTag> {
