@@ -35,6 +35,9 @@ internal class Comix(context: MangaLoaderContext) :
             isSearchWithFiltersSupported = true,
             isMultipleTagsSupported = true,
             isTagsExclusionSupported = false,
+            // --- NEW: Enable the native chip UI sections ---
+            isStatesSupported = true,
+            isTypesSupported = true,
         )
 
     override val availableSortOrders: Set<SortOrder> = LinkedHashSet(
@@ -46,31 +49,22 @@ internal class Comix(context: MangaLoaderContext) :
             SortOrder.ALPHABETICAL
         )
     )
-    // --- NEW: Status Dropdown UI ---
-    override fun getAvailableStates(): Set<MangaState> = setOf(
-        MangaState.ONGOING,
-        MangaState.FINISHED,
-        MangaState.PAUSED,
-        MangaState.ABANDONED
-    )
-
-    // --- NEW: Content Type Checkboxes UI ---
-    override val filters: List<MangaSourceListFilter>
-        get() = listOf(
-            MangaSourceListFilter.CheckboxGroup(
-                key = "content_types",
-                name = "Types",
-                options = arrayOf(
-                    MangaSourceListFilter.CheckboxGroup.Option("manga", "Manga"),
-                    MangaSourceListFilter.CheckboxGroup.Option("manhwa", "Manhwa"),
-                    MangaSourceListFilter.CheckboxGroup.Option("manhua", "Manhua"),
-                    MangaSourceListFilter.CheckboxGroup.Option("other", "Other")
-                )
-            )
-        )
     
     override suspend fun getFilterOptions() = MangaListFilterOptions(
         availableTags = fetchAvailableTags(),
+        // --- NEW: Populates native State chips ---
+        availableStates = setOf(
+            MangaState.ONGOING,
+            MangaState.FINISHED,
+            MangaState.PAUSED,
+            MangaState.ABANDONED
+        ),
+        // --- NEW: Populates native Type chips ---
+        availableTypes = setOf(
+            ContentType.MANGA,
+            ContentType.MANHWA,
+            ContentType.MANHUA
+        )
     )
 
     private suspend fun fetchAvailableTags(): Set<MangaTag> {
@@ -156,7 +150,7 @@ internal class Comix(context: MangaLoaderContext) :
                     append("&").append(param)
                 }
             }
-            // --- NEW: Apply Status Filter ---
+            // --- NEW: Handle Native State Filter ---
             filter.states.firstOrNull()?.let { state ->
                 val stateQuery = when (state) {
                     MangaState.ONGOING -> "releasing"
@@ -170,13 +164,20 @@ internal class Comix(context: MangaLoaderContext) :
                 }
             }
 
-            // --- NEW: Apply Checkbox Type Filters (Scenario A) ---
-            val typeFilter = filter.filters.find { it.key == "content_types" } as? MangaSourceListFilter.CheckboxGroup
-            typeFilter?.state?.forEach { selectedOption ->
-                // This appends "types[]=manga", "types[]=manhwa", etc., dynamically based on what is checked
-                addParam("types[]=${selectedOption.value}")
+            // --- NEW: Handle Native Type Filters (Scenario A Array format) ---
+            if (filter.types.isNotEmpty()) {
+                for (type in filter.types) {
+                    val typeQuery = when (type) {
+                        ContentType.MANGA -> "manga"
+                        ContentType.MANHWA -> "manhwa"
+                        ContentType.MANHUA -> "manhua"
+                        else -> ""
+                    }
+                    if (typeQuery.isNotEmpty()) {
+                        addParam("types[]=$typeQuery")
+                    }
+                }
             }
-
             // Search keyword if provided
             if (!filter.query.isNullOrEmpty()) {
                 addParam("keyword=${filter.query.urlEncoded()}")
