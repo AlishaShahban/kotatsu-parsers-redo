@@ -9,9 +9,10 @@ import org.koitharu.kotatsu.parsers.site.madara.MadaraParser
 internal class Zinmanga(context: MangaLoaderContext) :
 	MadaraParser(context, MangaParserSource.ZINMANGA, "zinmanga.net") {
 	override val datePattern = "MM/dd/yyyy"
-	override val withoutAjax = true
+	override val withoutAjax = false
 
     override fun getRequestHeaders() = super.getRequestHeaders().newBuilder()
         .set("Referer", "https://www.zinmanga.net/")
         .build()
 }
+
