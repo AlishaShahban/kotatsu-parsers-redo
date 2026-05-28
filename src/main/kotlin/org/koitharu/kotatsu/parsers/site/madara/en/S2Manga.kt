@@ -8,17 +8,8 @@ import org.koitharu.kotatsu.parsers.site.madara.MadaraParser
 @MangaSourceParser("S2MANGA", "S2Manga", "en")
 internal class S2Manga(context: MangaLoaderContext) :
 	MadaraParser(context, MangaParserSource.S2MANGA, "s2read.com") {
-        
+	
     override val datePattern = "MMMM dd, yyyy"
-
-    // Scenario 1 code is pasted here
-    override fun getHeaders(url: String): Headers {
-        return super.getHeaders(url).newBuilder().apply {
-            add("X-Requested-With", "XMLHttpRequest")
-            add("Referer", "https://s2read.com/")
-        }.build()
-    }
-
-	}
-
-}
+    
+    // Tells the parser to use admin-ajax.php with the manga ID instead of the broken /ajax/chapters/ URL
+    override val postReq = true
