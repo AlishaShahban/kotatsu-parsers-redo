@@ -61,7 +61,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.1")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.1")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
-    testImplementation("app.cash.quickjs:quickjs-android:0.9.2")
+    testImplementation("app.cash.quickjs:quickjs-jvm:0.9.2")
 }
 
 // tasks.register<ReportGenerateTask>("generateTestsReport")
