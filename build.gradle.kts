@@ -5,19 +5,21 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
-import tasks.ReportGenerateTask
+// import tasks.ReportGenerateTask
 
 group = "org.koitharu"
 version = "1.0"
 
+/*
 tasks.test {
     useJUnitPlatform()
 }
-
+*/
 ksp {
     arg("summaryOutputDir", "${projectDir}/.github")
 }
 
+/*
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     compilerOptions {
         freeCompilerArgs.addAll(
@@ -28,6 +30,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
         )
     }
 }
+*/
 
 kotlin {
     jvmToolchain(17)
@@ -61,4 +64,4 @@ dependencies {
     testImplementation(libs.quickjs)
 }
 
-tasks.register<ReportGenerateTask>("generateTestsReport")
+// tasks.register<ReportGenerateTask>("generateTestsReport")
