@@ -15,8 +15,8 @@ internal class ContinuationCallCallback(
 ) : Callback, CompletionHandler {
 
     override fun onResponse(call: Call, response: Response) {
-        continuation.resume(response) { _, value, _ ->
-            value.closeQuietly()
+        continuation.resume(response) { _ ->
+            response.closeQuietly()
         }
     }
 

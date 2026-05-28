@@ -98,12 +98,12 @@ internal abstract class MadaraParser(
 
 	override suspend fun getUsername(): String {
 		val body = webClient.httpGet("https://${domain}/").parseHtml().body()
-		return body.selectFirst(".c-user_name")?.text()
+		return body!!.selectFirst(".c-user_name")?.text()
 			?: run {
-				throw if (body.selectFirst("#loginform") != null) {
+				throw if (body!!.selectFirst("#loginform") != null) {
 					AuthRequiredException(source)
 				} else {
-					body.parseFailed("Cannot find username")
+					body!!.parseFailed("Cannot find username")
 				}
 			}
 	}
@@ -519,8 +519,8 @@ internal abstract class MadaraParser(
 	protected open suspend fun fetchAvailableTags(): Set<MangaTag> {
 		val doc = webClient.httpGet("https://$domain/$listUrl").parseHtml()
 		val body = doc.body()
-		val root1 = body.selectFirst("header")?.selectFirst("ul.second-menu")
-		val root2 = body.selectFirst("div.genres_wrap")?.selectFirst("ul.list-unstyled")
+		val root1 = body!!.selectFirst("header")?.selectFirst("ul.second-menu")
+		val root2 = body!!.selectFirst("div.genres_wrap")?.selectFirst("ul.list-unstyled")
 		if (root1 == null && root2 == null) {
 			doc.parseFailed("Root not found")
 		}

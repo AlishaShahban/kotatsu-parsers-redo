@@ -187,7 +187,7 @@ internal abstract class MadthemeParser(
 		}
 	}
 
-	protected open val selectDesc = "div.section-body.summary p.content"
+	protected open val selectDesc = "div.section-body!!.summary p.content"
 	protected open val selectState = "div.detail p:contains(Status) span"
 	protected open val selectAlt = "div.detail div.name h2"
 	protected open val selectTag = "div.detail p:contains(Genres) a"

@@ -51,7 +51,7 @@ internal class NicovideoSeigaParser(context: MangaLoaderContext) :
 
 	override suspend fun getUsername(): String {
 		val body = webClient.httpGet("https://${getDomain("app")}/my/apps").parseHtml().body()
-		return body.selectFirst("#userinfo > div > div > strong")?.text() ?: throw AuthRequiredException(source)
+		return body!!.selectFirst("#userinfo > div > div > strong")?.text() ?: throw AuthRequiredException(source)
 	}
 
 	override suspend fun getList(offset: Int, order: SortOrder, filter: MangaListFilter): List<Manga> {

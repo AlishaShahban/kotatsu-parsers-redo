@@ -77,7 +77,7 @@ internal class Vipmanga(context: MangaLoaderContext) :
 		}
 
 		val response = webClient.httpGet(url)
-		val body = response.body.string()
+		val body = response.body!!.string()
 		val json = JSONObject(body)
 
 		if (!json.optBoolean("success", false)) {
@@ -180,7 +180,7 @@ internal class Vipmanga(context: MangaLoaderContext) :
 
 		val url = "$baseUrl/api/manga/$mangaId"
 		val response = webClient.httpGet(url)
-		val body = response.body.string()
+		val body = response.body!!.string()
 		val json = JSONObject(body)
 
 		if (!json.optBoolean("success", false)) {
@@ -231,7 +231,7 @@ internal class Vipmanga(context: MangaLoaderContext) :
 	private suspend fun fetchChapters(mangaId: Int): List<MangaChapter> = coroutineScope {
 		val firstPageUrl = "$baseUrl/api/manga/$mangaId/chapters?page=1&per_page=20&order=oldest"
 		val firstResponse = webClient.httpGet(firstPageUrl)
-		val firstBody = firstResponse.body.string()
+		val firstBody = firstResponse.body!!.string()
 		val firstJson = JSONObject(firstBody)
 
 		if (!firstJson.optBoolean("success", false)) {
@@ -283,7 +283,7 @@ internal class Vipmanga(context: MangaLoaderContext) :
 				async {
 					val url = "$baseUrl/api/manga/$mangaId/chapters?page=$page&per_page=20&order=oldest"
 					val response = webClient.httpGet(url)
-					val body = response.body.string()
+					val body = response.body!!.string()
 					val json = JSONObject(body)
 
 					if (json.optBoolean("success", false)) {

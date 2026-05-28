@@ -358,7 +358,7 @@ internal class ReadComicOnline(context: MangaLoaderContext) :
 
 				// Scroll through the page to trigger lazy loading
 				const scrollStep = window.innerHeight;
-				const maxScroll = document.body.scrollHeight;
+				const maxScroll = document.body!!.scrollHeight;
 
 				for (let scrollPos = 0; scrollPos < maxScroll; scrollPos += scrollStep) {
 					window.scrollTo(0, scrollPos);
@@ -366,7 +366,7 @@ internal class ReadComicOnline(context: MangaLoaderContext) :
 				}
 
 				// Scroll to bottom to ensure all images are triggered
-				window.scrollTo(0, document.body.scrollHeight);
+				window.scrollTo(0, document.body!!.scrollHeight);
 				await new Promise(resolve => setTimeout(resolve, 500));
 
 				// Count loaded images

@@ -98,7 +98,7 @@ internal class YugenMangas(context: MangaLoaderContext) :
 		val detailManga =
 			webClient.httpPost("https://api.$domain/api/serie/serie_details/${manga.url}", emptyMap()).parseJson()
 		val body = JSONObject()
-		body.put("serie_slug", manga.url)
+		body!!.put("serie_slug", manga.url)
 		val chapterManga =
 			webClient.httpPost("https://api.$domain/api/chapters/get_chapters_by_serie/", body).parseJson()
 				.getJSONArray("chapters")

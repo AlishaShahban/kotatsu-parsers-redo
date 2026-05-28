@@ -45,7 +45,7 @@ internal class MangaReaderToParser(context: MangaLoaderContext) :
 	// It will be easier to connect to a manga page, as the source redirects to a lot of advertising.
 	override suspend fun getUsername(): String {
 		val body = webClient.httpGet("https://${domain}/user/profile").parseHtml().body()
-		return body.getElementById("pro5-name")?.attr("value") ?: body.parseFailed("Cannot find username")
+		return body!!.getElementById("pro5-name")?.attr("value") ?: body!!.parseFailed("Cannot find username")
 	}
 
 	override val availableSortOrders: Set<SortOrder> = EnumSet.of(

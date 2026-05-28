@@ -272,7 +272,7 @@ internal abstract class MangoThemeParser(
 
 	private suspend fun requestJson(url: String): JSONObject {
 		return webClient.httpGet(url, getRequestHeaders()).use { response ->
-			val body = response.body.string()
+			val body = response.body!!.string()
 			val parsedBody = if (response.headers["x-encrypted"].toBoolean()) {
 				MangoThemeDecrypt.decrypt(body, encryptionKey)
 			} else {

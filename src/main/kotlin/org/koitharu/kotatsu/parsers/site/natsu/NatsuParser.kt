@@ -380,7 +380,7 @@ internal abstract class NatsuParser(
         return try {
             // Try to fetch from WP JSON API first (more reliable)
             val response = webClient.httpGet("https://${domain}/wp-json/wp/v2/genre?per_page=100&page=1&orderby=count&order=desc")
-            val jsonText = response.body.use { it.string() }
+            val jsonText = response.body!!.use { it.string() }
             val jsonArray = org.json.JSONArray(jsonText)
             val tags = mutableSetOf<MangaTag>()
 
@@ -476,11 +476,11 @@ internal abstract class NatsuParser(
 
     protected open suspend fun httpPost(url: String, form: Map<String, String>, extraHeaders: Headers? = null): Document {
         val body = MultipartBody.Builder().setType(MultipartBody.FORM)
-        form.forEach { (k, v) -> body.addFormDataPart(k, v) }
+        form.forEach { (k, v) -> body!!.addFormDataPart(k, v) }
 
         val requestBuilder = Request.Builder()
             .url(url)
-            .post(body.build())
+            .post(body!!.build())
             .addHeader("User-Agent", config[userAgentKey])
             .addHeader("Referer", "https://${domain}/advanced-search/")
             .addHeader("Origin", "https://${domain}")

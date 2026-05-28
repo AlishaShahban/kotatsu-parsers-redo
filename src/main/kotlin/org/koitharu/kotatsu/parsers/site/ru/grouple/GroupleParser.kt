@@ -429,13 +429,13 @@ internal abstract class GroupleParser(
     override suspend fun getRelatedManga(seed: Manga): List<Manga> {
         val doc = webClient.httpGet(seed.url.toAbsoluteUrl(domain)).parseHtml()
         val body = doc.body()
-        val root = body.getElementById("mangaBox")
+        val root = body!!.getElementById("mangaBox")
         val relatedHeader = root?.select("h4")?.firstOrNull {
             it.ownText().contains(RELATED_TITLE, ignoreCase = true)
         }
         val relatedContainer = relatedHeader?.nextElementSibling()
             ?: root?.selectFirst("div.tiles.row:has(.tile), .related-titles, .recommendations")
-            ?: body.selectFirst("div.tiles.row:has(.tile)")
+            ?: body!!.selectFirst("div.tiles.row:has(.tile)")
             ?: return emptyList()
         return relatedContainer.select("div.tile").mapNotNull(::parseManga)
     }

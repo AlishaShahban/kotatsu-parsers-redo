@@ -39,10 +39,10 @@ public class OkHttpWebClient(
 	override suspend fun httpPost(url: HttpUrl, form: Map<String, String>, extraHeaders: Headers?): Response {
 		val body = FormBody.Builder()
 		form.forEach { (k, v) ->
-			body.addEncoded(k, v)
+			body!!.addEncoded(k, v)
 		}
 		val request = Request.Builder()
-			.post(body.build())
+			.post(body!!.build())
 			.url(url)
 			.addTags()
 			.addExtraHeaders(extraHeaders)
@@ -56,11 +56,11 @@ public class OkHttpWebClient(
 			if (pos != -1) {
 				val k = it.substring(0, pos)
 				val v = it.substring(pos + 1)
-				body.addEncoded(k, v)
+				body!!.addEncoded(k, v)
 			}
 		}
 		val request = Request.Builder()
-			.post(body.build())
+			.post(body!!.build())
 			.url(url)
 			.addTags()
 			.addExtraHeaders(extraHeaders)
@@ -69,7 +69,7 @@ public class OkHttpWebClient(
 
 	override suspend fun httpPost(url: HttpUrl, body: JSONObject, extraHeaders: Headers?): Response {
 		val mediaType = "application/json; charset=utf-8".toMediaType()
-		val requestBody = body.toString().toRequestBody(mediaType)
+		val requestBody = body!!.toString().toRequestBody(mediaType)
 		val request = Request.Builder()
 			.post(requestBody)
 			.url(url)
@@ -80,12 +80,12 @@ public class OkHttpWebClient(
 
 	override suspend fun graphQLQuery(endpoint: String, query: String): JSONObject {
 		val body = JSONObject()
-		body.put("operationName", null as Any?)
-		body.put("variables", JSONObject())
-		body.put("query", "{$query}")
+		body!!.put("operationName", null as Any?)
+		body!!.put("variables", JSONObject())
+		body!!.put("query", "{$query}")
 
 		val mediaType = "application/json; charset=utf-8".toMediaType()
-		val requestBody = body.toString().toRequestBody(mediaType)
+		val requestBody = body!!.toString().toRequestBody(mediaType)
 		val request = Request.Builder()
 			.post(requestBody)
 			.url(endpoint)

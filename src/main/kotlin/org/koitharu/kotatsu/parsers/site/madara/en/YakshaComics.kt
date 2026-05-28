@@ -65,7 +65,7 @@ internal class YakshaComics(context: MangaLoaderContext) :
 			.build()
 		val response = chain.proceed(challengeRequest)
 		response.use {
-			val token = TOKEN_REGEX.find(it.body.string())?.groupValues?.getOrNull(1)
+			val token = TOKEN_REGEX.find(it.body!!.string())?.groupValues?.getOrNull(1)
 			return if (!token.isNullOrBlank() && token != "nil") {
 				token
 			} else {

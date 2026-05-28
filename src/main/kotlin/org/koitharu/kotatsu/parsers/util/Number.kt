@@ -1,3 +1,4 @@
+@file:OptIn(kotlin.contracts.ExperimentalContracts::class)
 @file:JvmName("NumberUtils")
 
 package org.koitharu.kotatsu.parsers.util

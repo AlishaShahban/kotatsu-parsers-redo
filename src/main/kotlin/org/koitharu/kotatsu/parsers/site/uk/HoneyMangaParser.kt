@@ -64,10 +64,10 @@ internal class HoneyMangaParser(context: MangaLoaderContext) :
 	override suspend fun getDetails(manga: Manga): Manga {
 		val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
 		val body = JSONObject()
-		body.put("mangaId", manga.url)
-		body.put("pageSize", INFINITE) // Hack lol (no)
-		body.put("page", 1)
-		body.put("sortOrder", "ASC")
+		body!!.put("mangaId", manga.url)
+		body!!.put("pageSize", INFINITE) // Hack lol (no)
+		body!!.put("page", 1)
+		body!!.put("sortOrder", "ASC")
 		val chapterRequest = webClient.httpPost(chapterApi, body).parseJson()
 		return manga.copy(
 			chapters = chapterRequest.getJSONArray("data").mapJSON { jo ->
@@ -90,12 +90,12 @@ internal class HoneyMangaParser(context: MangaLoaderContext) :
 
 	override suspend fun getListPage(page: Int, order: SortOrder, filter: MangaListFilter): List<Manga> {
 		val body = JSONObject()
-		body.put("page", page)
-		body.put("pageSize", PAGE_SIZE)
+		body!!.put("page", page)
+		body!!.put("pageSize", PAGE_SIZE)
 		val sort = JSONObject()
 		sort.put("sortBy", getSortKey(order))
 		sort.put("sortOrder", "DESC")
-		body.put("sort", sort)
+		body!!.put("sort", sort)
 
 		val content = when {
 			filter.tags.isNotEmpty() -> {
@@ -110,7 +110,7 @@ internal class HoneyMangaParser(context: MangaLoaderContext) :
 				}
 				tagFilter.put("filterValue", tag)
 				filters.put(tagFilter)
-				body.put("filters", filters)
+				body!!.put("filters", filters)
 				webClient.httpPost(mangaApi, body).parseJson().getJSONArray("data")
 
 			}
@@ -132,7 +132,7 @@ internal class HoneyMangaParser(context: MangaLoaderContext) :
 
 			else -> {
 				// Popular/Newest
-				body.put("filters", JSONArray())
+				body!!.put("filters", JSONArray())
 				webClient.httpPost(mangaApi, body).parseJson().getJSONArray("data")
 			}
 		}

@@ -1,3 +1,4 @@
+@file:OptIn(kotlin.contracts.ExperimentalContracts::class)
 package org.koitharu.kotatsu.parsers.util.json
 
 import androidx.collection.ArraySet

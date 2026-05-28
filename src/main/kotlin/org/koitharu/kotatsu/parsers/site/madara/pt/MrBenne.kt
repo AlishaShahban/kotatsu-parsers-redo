@@ -18,7 +18,7 @@ internal class MrBenne(context: MangaLoaderContext) :
 	override suspend fun fetchAvailableTags(): Set<MangaTag> {
 		val doc = webClient.httpGet("https://$domain/?s=&post_type=wp-manga").parseHtml()
 		val body = doc.body()
-		val root = body.selectFirst("div.form-group.checkbox-group")
+		val root = body!!.selectFirst("div.form-group.checkbox-group")
 		val list = root?.select("div.checkbox").orEmpty()
 		val keySet = HashSet<String>(list.size)
 		return list.mapNotNullToSet { div ->

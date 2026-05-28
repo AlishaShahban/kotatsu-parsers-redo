@@ -104,9 +104,9 @@ internal class MangaDna(context: MangaLoaderContext) :
 
 		val chaptersDeferred = async { getChapters(manga, doc) }
 
-		val desc = body.select(selectDesc).html()
+		val desc = body!!.select(selectDesc).html()
 
-		val stateDiv = (body.selectFirst("div.post-content_item:contains(Status)"))?.selectLast("div.summary-content")
+		val stateDiv = (body!!.selectFirst("div.post-content_item:contains(Status)"))?.selectLast("div.summary-content")
 
 		val state = stateDiv?.let {
 			when (it.text()) {

@@ -66,7 +66,7 @@ internal class Prochan(context: MangaLoaderContext) : PagedMangaParser(
 		}
 
 		val response = webClient.httpGet(url)
-		val body = response.body.string()
+		val body = response.body!!.string()
 		val json = JSONObject(body)
 		val data = json.optJSONArray("data") ?: return emptyList()
 
@@ -164,7 +164,7 @@ internal class Prochan(context: MangaLoaderContext) : PagedMangaParser(
 
 		val url = "https://prochan.net/api/public/$type/$id/chapters?page=1&limit=30&order=asc"
 		val response = webClient.httpGet(url)
-		val body = response.body.string()
+		val body = response.body!!.string()
 		val json = JSONObject(body)
 		val data = json.optJSONArray("data") ?: return emptyList()
 

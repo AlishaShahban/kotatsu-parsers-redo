@@ -161,8 +161,8 @@ internal abstract class MangaFireParser(
 
     override suspend fun getUsername(): String {
         val body = client.httpGet("https://${domain}/user/profile").parseHtml().body()
-        return body.selectFirst("form.ajax input[name*=username]")?.attr("value")
-            ?: body.parseFailed("Cannot find username")
+        return body!!.selectFirst("form.ajax input[name*=username]")?.attr("value")
+            ?: body!!.parseFailed("Cannot find username")
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {

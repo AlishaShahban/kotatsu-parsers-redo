@@ -1,3 +1,4 @@
+@file:OptIn(kotlin.contracts.ExperimentalContracts::class)
 @file:JvmName("JsoupUtils")
 
 package org.koitharu.kotatsu.parsers.util

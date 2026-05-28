@@ -108,7 +108,7 @@ internal class Saytruyenhay(context: MangaLoaderContext) :
 
 		val chaptersDeferred = async { getChapters(manga, doc) }
 
-		val desc = body.select(selectDesc).let {
+		val desc = body!!.select(selectDesc).let {
 			if (it.select("p").text().isNotEmpty()) {
 				it.select("p").joinToString(separator = "\n\n") { p ->
 					p.text().replace("<br>", "\n")
@@ -118,18 +118,18 @@ internal class Saytruyenhay(context: MangaLoaderContext) :
 			}
 		}
 
-		val stateDiv = (body.selectFirst("div.post-content_item:contains(Status)")
-			?: body.selectFirst("div.post-content_item:contains(Statut)")
-			?: body.selectFirst("div.post-content_item:contains(État)")
-			?: body.selectFirst("div.post-content_item:contains(حالة العمل)")
-			?: body.selectFirst("div.post-content_item:contains(Estado)")
-			?: body.selectFirst("div.post-content_item:contains(สถานะ)")
-			?: body.selectFirst("div.post-content_item:contains(Stato)")
-			?: body.selectFirst("div.post-content_item:contains(Durum)")
-			?: body.selectFirst("div.post-content_item:contains(Statüsü)")
-			?: body.selectFirst("div.post-content_item:contains(Статус)")
-			?: body.selectFirst("div.post-content_item:contains(状态)")
-			?: body.selectFirst("div.post-content_item:contains(الحالة)"))?.selectLast("div.summary-content")
+		val stateDiv = (body!!.selectFirst("div.post-content_item:contains(Status)")
+			?: body!!.selectFirst("div.post-content_item:contains(Statut)")
+			?: body!!.selectFirst("div.post-content_item:contains(État)")
+			?: body!!.selectFirst("div.post-content_item:contains(حالة العمل)")
+			?: body!!.selectFirst("div.post-content_item:contains(Estado)")
+			?: body!!.selectFirst("div.post-content_item:contains(สถานะ)")
+			?: body!!.selectFirst("div.post-content_item:contains(Stato)")
+			?: body!!.selectFirst("div.post-content_item:contains(Durum)")
+			?: body!!.selectFirst("div.post-content_item:contains(Statüsü)")
+			?: body!!.selectFirst("div.post-content_item:contains(Статус)")
+			?: body!!.selectFirst("div.post-content_item:contains(状态)")
+			?: body!!.selectFirst("div.post-content_item:contains(الحالة)"))?.selectLast("div.summary-content")
 
 		val state = stateDiv?.let {
 			when (it.text()) {

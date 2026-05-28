@@ -118,11 +118,11 @@ internal class NudeMoonParser(
 
 	override suspend fun getDetails(manga: Manga): Manga {
 		val body = webClient.httpGet(manga.url.toAbsoluteUrl(domain)).parseHtml().body()
-		val root = body.selectFirstOrThrow("table.news_pic2")
+		val root = body!!.selectFirstOrThrow("table.news_pic2")
 		val dateFormat = SimpleDateFormat("dd MMMM yyyy", sourceLocale)
 		val author = root.getElementsByAttributeValueContaining("href", "/mangaka/").firstOrNull()?.text()
 		return manga.copy(
-			largeCoverUrl = body.selectFirstOrThrow("img[data-src]").attrAsAbsoluteUrl("data-src"),
+			largeCoverUrl = body!!.selectFirstOrThrow("img[data-src]").attrAsAbsoluteUrl("data-src"),
 			description = root.selectFirst(".description")?.html() ?: manga.description,
 			tags = root.getElementsByAttributeValueContaining("href", "/tag/").mapToSet {
 				MangaTag(
@@ -184,12 +184,12 @@ internal class NudeMoonParser(
 
 	override suspend fun getUsername(): String {
 		val body = webClient.httpGet("https://${domain}/").parseHtml().body()
-		return body.getElementsContainingOwnText("Профиль").firstOrNull()?.attr("href")?.substringAfterLast('/')
+		return body!!.getElementsContainingOwnText("Профиль").firstOrNull()?.attr("href")?.substringAfterLast('/')
 			?: run {
-				throw if (body.selectFirst("form[name=\"loginform\"]") != null) {
+				throw if (body!!.selectFirst("form[name=\"loginform\"]") != null) {
 					AuthRequiredException(source)
 				} else {
-					body.parseFailed("Cannot find username")
+					body!!.parseFailed("Cannot find username")
 				}
 			}
 	}

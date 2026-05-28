@@ -30,12 +30,12 @@ internal class MangasNoSekai(context: MangaLoaderContext) :
 				)
 			},
 			authors = setOfNotNull(author),
-			description = body.selectFirst("#section-sinopsis p")?.text().orEmpty(),
+			description = body!!.selectFirst("#section-sinopsis p")?.text().orEmpty(),
 			altTitles = setOfNotNull(
 				doc.selectFirst("section#section-sinopsis div.d-flex:has(div:contains(Otros nombres)) p")
 					?.textOrNull(),
 			),
-			state = body.selectFirst("section#section-sinopsis div.d-flex:has(div:contains(Estado)) p")
+			state = body!!.selectFirst("section#section-sinopsis div.d-flex:has(div:contains(Estado)) p")
 				?.let {
 					when (it.text()) {
 						in ongoing -> MangaState.ONGOING

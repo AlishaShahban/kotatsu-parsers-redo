@@ -149,7 +149,7 @@ internal abstract class Manga18Parser(
 		val body = doc.body().selectFirstOrThrow("div.detail_listInfo")
 		val chaptersDeferred = async { getChapters(doc) }
 		val desc = doc.selectFirst(selectDesc)?.html()
-		val stateDiv = body.selectFirst(selectState)
+		val stateDiv = body!!.selectFirst(selectState)
 		val state = stateDiv?.let {
 			when (it.text()) {
 				in ongoing -> MangaState.ONGOING
@@ -157,8 +157,8 @@ internal abstract class Manga18Parser(
 				else -> null
 			}
 		}
-		val alt = body.selectFirst(selectAlt)?.textOrNull().takeUnless { it == "Updating" }
-		val author = body.selectFirst(selectAuthor)?.textOrNull()?.takeUnless { it == "Updating" }
+		val alt = body!!.selectFirst(selectAlt)?.textOrNull().takeUnless { it == "Updating" }
+		val author = body!!.selectFirst(selectAuthor)?.textOrNull()?.takeUnless { it == "Updating" }
 		manga.copy(
 			tags = doc.body().select(selectTag).mapToSet { a ->
 				MangaTag(

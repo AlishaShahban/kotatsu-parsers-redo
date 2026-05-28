@@ -188,7 +188,7 @@ internal class ScantradUnion(context: MangaLoaderContext) :
 	private suspend fun fetchAvailableTags(): Set<MangaTag> {
 		val doc = webClient.httpGet("https://$domain/").parseHtml()
 		val body = doc.body()
-		val list = body.select(".asp_gochosen")[1].select("option").orEmpty()
+		val list = body!!.select(".asp_gochosen")[1].select("option").orEmpty()
 		return list.mapToSet { li ->
 			MangaTag(
 				key = li.text().lowercase().replace(" ", "-"),

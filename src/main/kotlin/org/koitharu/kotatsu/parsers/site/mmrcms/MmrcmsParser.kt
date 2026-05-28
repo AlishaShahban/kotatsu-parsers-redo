@@ -185,7 +185,7 @@ internal abstract class MmrcmsParser(
 		val body = doc.body().selectFirstOrThrow("dl.dl-horizontal")
 		val chaptersDeferred = async { getChapters(doc) }
 		val desc = doc.selectFirst(selectDesc)?.text().orEmpty()
-		val stateDiv = body.selectFirst(selectState)?.nextElementSibling()
+		val stateDiv = body!!.selectFirst(selectState)?.nextElementSibling()
 		val state = stateDiv?.let {
 			when (it.text()) {
 				in ongoing -> MangaState.ONGOING

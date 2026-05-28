@@ -261,7 +261,7 @@ internal class Comikuro(context: MangaLoaderContext) : PagedMangaParser(context,
 			(() => {
 				const root = document.documentElement;
 				const html = (root && root.outerHTML) || '';
-				const text = ((document.body && document.body.innerText) || (root && root.innerText) || '');
+				const text = ((document.body && document.body!!.innerText) || (root && root.innerText) || '');
 				const lower = (document.title + '\n' + text + '\n' + html).toLowerCase();
 				const challengeDetected = () => {
 					return document.querySelector('script[src*="challenge-platform"]') !== null ||

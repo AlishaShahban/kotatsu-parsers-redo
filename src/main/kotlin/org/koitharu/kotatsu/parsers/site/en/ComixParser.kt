@@ -36,8 +36,8 @@ internal class Comix(context: MangaLoaderContext) :
             isMultipleTagsSupported = true,
             isTagsExclusionSupported = false,
             // --- NEW: Enable the native chip UI sections ---
-            isStatesSupported = true,
-            isTypesSupported = true,
+
+
         )
 
     override val availableSortOrders: Set<SortOrder> = LinkedHashSet(
@@ -49,7 +49,7 @@ internal class Comix(context: MangaLoaderContext) :
             SortOrder.ALPHABETICAL
         )
     )
-    
+
     override suspend fun getFilterOptions() = MangaListFilterOptions(
         availableTags = fetchAvailableTags(),
         // --- NEW: Populates native State chips ---
@@ -58,12 +58,6 @@ internal class Comix(context: MangaLoaderContext) :
             MangaState.FINISHED,
             MangaState.PAUSED,
             MangaState.ABANDONED
-        ),
-        // --- NEW: Populates native Type chips ---
-        availableTypes = setOf(
-            ContentType.MANGA,
-            ContentType.MANHWA,
-            ContentType.MANHUA
         )
     )
 
@@ -522,7 +516,7 @@ internal class Comix(context: MangaLoaderContext) :
                 const challengeDetected = () => {
                     const root = document.documentElement;
                     const html = (root && root.outerHTML) || "";
-                    const text = ((document.body && document.body.innerText) || (root && root.innerText) || "");
+                    const text = ((document.body && document.body!!.innerText) || (root && root.innerText) || "");
                     const lower = (document.title + "\n" + text + "\n" + html).toLowerCase();
                     return document.querySelector('script[src*="challenge-platform"]') !== null ||
                         document.querySelector('script[src*="turnstile"]') !== null ||

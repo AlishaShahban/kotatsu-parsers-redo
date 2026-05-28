@@ -175,7 +175,7 @@ internal class GocTruyenTranhVui(context: MangaLoaderContext):
 
     override suspend fun getPages(chapter: MangaChapter): List<MangaPage> {
         enforceRateLimit()
-        val responseBody = webClient.httpGet(chapter.url.toAbsoluteUrl(domain)).body.string()
+        val responseBody = webClient.httpGet(chapter.url.toAbsoluteUrl(domain)).body!!.string()
         val chapterJsonRaw = responseBody.substringAfter("chapterJson: `", "").substringBefore("`", "")
 
         val imageUrls: List<String>

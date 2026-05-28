@@ -118,7 +118,7 @@ internal class Onma(context: MangaLoaderContext) :
 		val body = doc.body().selectFirstOrThrow("div.panel-body")
 		val chaptersDeferred = async { getChapters(doc) }
 		val desc = doc.selectFirst(selectDesc)?.text().orEmpty()
-		val stateDiv = body.selectFirst(selectState)
+		val stateDiv = body!!.selectFirst(selectState)
 		val state = stateDiv?.let {
 			when (it.text()) {
 				in ongoing -> MangaState.ONGOING

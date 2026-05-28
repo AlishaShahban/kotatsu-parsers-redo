@@ -136,7 +136,7 @@ internal class LuratoonScansParser(context: MangaLoaderContext) :
         val response = chain.proceed(chain.request())
         if (response.mimeType == "application/octet-stream") {
             val (bytes, name) = response.use { resp ->
-                ZipInputStream(resp.body.byteStream()).use {
+                ZipInputStream(resp.body!!.byteStream()).use {
                     val entry = it.nextEntry
                     it.readBytes() to entry?.name
                 }

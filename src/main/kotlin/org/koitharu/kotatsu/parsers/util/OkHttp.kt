@@ -1,3 +1,4 @@
+@file:OptIn(kotlin.contracts.ExperimentalContracts::class)
 @file:JvmName("OkHttpUtils")
 
 package org.koitharu.kotatsu.parsers.util
@@ -43,7 +44,7 @@ public inline fun Response.map(mapper: (ResponseBody) -> ResponseBody): Response
     contract {
         callsInPlace(mapper, InvocationKind.AT_MOST_ONCE)
     }
-    return body.use { responseBody ->
+    return body!!.use { responseBody ->
         newBuilder()
             .body(mapper(responseBody))
             .build()

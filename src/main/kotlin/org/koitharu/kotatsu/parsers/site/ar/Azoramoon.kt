@@ -80,7 +80,7 @@ internal class Azoramoon(context: MangaLoaderContext) :
 		}
 
 		val response = webClient.httpGet(url)
-		val body = response.body.string()
+		val body = response.body!!.string()
 
 		// Try to parse as JSONArray first (API returns direct array)
 		val jsonArray = try {

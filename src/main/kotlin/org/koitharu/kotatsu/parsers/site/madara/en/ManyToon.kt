@@ -83,11 +83,11 @@ internal class ManyToon(context: MangaLoaderContext) :
 		val doc = webClient.httpGet(fullUrl).parseHtml()
 		val body = doc.body()
 		val chaptersDeferred = async { loadChapters(manga.url, doc) }
-		val desc = body.select(selectDesc).html()
+		val desc = body!!.select(selectDesc).html()
 		val stateDiv = if (selectState.isEmpty()) {
-			body.selectFirst("div.post-content_item:contains(Status)")?.selectLast("div.summary-content")
+			body!!.selectFirst("div.post-content_item:contains(Status)")?.selectLast("div.summary-content")
 		} else {
-			body.selectFirst(selectState)
+			body!!.selectFirst(selectState)
 		}
 
 

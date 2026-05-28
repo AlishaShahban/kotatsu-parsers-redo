@@ -264,7 +264,7 @@ internal class MediocreToons(context: MangaLoaderContext) : PagedMangaParser(
 
 		if (body == null) return emptySet()
 
-		val tagsArray = if (body.startsWith("[")) {
+		val tagsArray = if (body!!.startsWith("[")) {
 			org.json.JSONArray(body)
 		} else {
 			val json = JSONObject(body)

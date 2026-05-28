@@ -24,22 +24,22 @@ internal class ManhwaHentai(context: MangaLoaderContext) :
 		val doc = webClient.httpGet(fullUrl).parseHtml()
 		val body = doc.body()
 		val chaptersDeferred = async { loadChapters(manga.url, doc) }
-		val desc = body.select(selectDesc).html()
+		val desc = body!!.select(selectDesc).html()
 		val stateDiv = if (selectState.isEmpty()) {
-			(body.selectFirst("div.post-content_item:contains(Status)")
-				?: body.selectFirst("div.post-content_item:contains(Statut)")
-				?: body.selectFirst("div.post-content_item:contains(État)")
-				?: body.selectFirst("div.post-content_item:contains(حالة العمل)")
-				?: body.selectFirst("div.post-content_item:contains(Estado)")
-				?: body.selectFirst("div.post-content_item:contains(สถานะ)")
-				?: body.selectFirst("div.post-content_item:contains(Stato)")
-				?: body.selectFirst("div.post-content_item:contains(Durum)")
-				?: body.selectFirst("div.post-content_item:contains(Statüsü)")
-				?: body.selectFirst("div.post-content_item:contains(Статус)")
-				?: body.selectFirst("div.post-content_item:contains(状态)")
-				?: body.selectFirst("div.post-content_item:contains(الحالة)"))?.selectLast("div.summary-content")
+			(body!!.selectFirst("div.post-content_item:contains(Status)")
+				?: body!!.selectFirst("div.post-content_item:contains(Statut)")
+				?: body!!.selectFirst("div.post-content_item:contains(État)")
+				?: body!!.selectFirst("div.post-content_item:contains(حالة العمل)")
+				?: body!!.selectFirst("div.post-content_item:contains(Estado)")
+				?: body!!.selectFirst("div.post-content_item:contains(สถานะ)")
+				?: body!!.selectFirst("div.post-content_item:contains(Stato)")
+				?: body!!.selectFirst("div.post-content_item:contains(Durum)")
+				?: body!!.selectFirst("div.post-content_item:contains(Statüsü)")
+				?: body!!.selectFirst("div.post-content_item:contains(Статус)")
+				?: body!!.selectFirst("div.post-content_item:contains(状态)")
+				?: body!!.selectFirst("div.post-content_item:contains(الحالة)"))?.selectLast("div.summary-content")
 		} else {
-			body.selectFirst(selectState)
+			body!!.selectFirst(selectState)
 		}
 
 
