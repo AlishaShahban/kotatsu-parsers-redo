@@ -67,7 +67,7 @@ dependencies {
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     compilerOptions {
         freeCompilerArgs.add("-opt-in=org.koitharu.kotatsu.parsers.InternalParsersApi")
+        freeCompilerArgs.add("-opt-in=kotlin.contracts.ExperimentalContracts")
     }
 }
-
 // tasks.register<ReportGenerateTask>("generateTestsReport")
