@@ -1,11 +1,11 @@
-import tasks.ReportGenerateTask
-
 plugins {
     `java-library`
     `maven-publish`
     id("org.jetbrains.kotlin.jvm")
     id("com.google.devtools.ksp")
 }
+
+import tasks.ReportGenerateTask
 
 group = "org.koitharu"
 version = "1.0"
