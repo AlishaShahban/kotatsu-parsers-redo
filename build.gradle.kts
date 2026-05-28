@@ -47,21 +47,21 @@ publishing {
 }
 
 dependencies {
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.okhttp)
-    implementation(libs.okio)
-    implementation(libs.json)
-    implementation(libs.androidx.collection)
-    api(libs.jsoup)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okio:okio:3.6.0")
+    implementation("org.json:json:20231013")
+    implementation("androidx.collection:collection:1.3.0")
+    api("org.jsoup:jsoup:1.17.2")
 
     ksp(project(":kotatsu-parsers-ksp"))
 
-    testImplementation(libs.junit.api)
-    testImplementation(libs.junit.engine)
-    testImplementation(libs.junit.params)
-    testRuntimeOnly(libs.junit.launcher)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.quickjs)
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.1")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.1")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("app.cash.quickjs:quickjs-android:0.92.0")
 }
 
 // tasks.register<ReportGenerateTask>("generateTestsReport")
