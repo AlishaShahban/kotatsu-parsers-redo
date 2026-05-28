@@ -51,7 +51,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okio:okio:3.6.0")
     implementation("org.json:json:20231013")
-    implementation("androidx.collection:collection:1.3.0")
+    implementation("androidx.collection:collection:1.4.5")
     api("org.jsoup:jsoup:1.17.2")
 
     ksp(project(":kotatsu-parsers-ksp"))
