@@ -3,8 +3,8 @@ import tasks.ReportGenerateTask
 plugins {
     `java-library`
     `maven-publish`
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.ksp)
+    id("org.jetbrains.kotlin.jvm")
+    id("com.google.devtools.ksp")
 }
 
 group = "org.koitharu"
