@@ -64,4 +64,8 @@ dependencies {
     testImplementation("app.cash.quickjs:quickjs-jvm:0.9.2")
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions.freeCompilerArgs += "-opt-in=org.koitharu.kotatsu.parsers.InternalParsersApi"
+}
+
 // tasks.register<ReportGenerateTask>("generateTestsReport")
