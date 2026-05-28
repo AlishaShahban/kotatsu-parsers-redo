@@ -1,3 +1,4 @@
+@file:OptIn(org.koitharu.kotatsu.parsers.InternalParsersApi::class)
 package org.koitharu.kotatsu.parsers.site.all
 
 import okhttp3.Headers
